@@ -1,7 +1,7 @@
-package edu.school21.cinema.servlets;
+package edu.school21.cinema.servlet;
 
 
-import edu.school21.cinema.services.CinemaUsersService;
+import edu.school21.cinema.service.CinemaUsersService;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
