@@ -1,6 +1,9 @@
 package edu.school21.cinema.servlet;
 
+import edu.school21.cinema.model.CinemaUser;
 import edu.school21.cinema.properties.JspPathProperties;
+import edu.school21.cinema.service.CinemaUserService;
+import edu.school21.cinema.service.impl.CinemaUserServiceImpl;
 import edu.school21.cinema.type.ContentType;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,12 +14,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.springframework.context.ApplicationContext;
 
 @WebServlet("/signUp")
 public class SignUpServlet extends HttpServlet {
 
   private ApplicationContext applicationContext;
+  private CinemaUserService cinemaUserService;
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -31,13 +36,26 @@ public class SignUpServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws IOException {
-    PrintWriter writer = resp.getWriter();
-    writer.println("<html>Hello, I am a Java servlet!</html>");
-    writer.flush();
+
+    if (cinemaUserService == null) {
+      cinemaUserService = applicationContext.getBean("cinemaUserService", CinemaUserService.class);
+    }
+
+    CinemaUser user = cinemaUserService.save(new CinemaUser(req.getParameter("first-name")
+        , req.getParameter("last-name")
+        , req.getParameter("phone-number")
+        , req.getParameter("email")
+        , req.getParameter("password")));
+
+    // todo signUp
+
+    HttpSession httpSession = req.getSession();
+    httpSession.setAttribute("email", user.getEmail());
+    resp.sendRedirect("/profile");
   }
 
   @Override
   public void init(ServletConfig config) {
-    this.applicationContext = (ApplicationContext) config.getServletContext().getAttribute("applicationContext");
+    applicationContext = (ApplicationContext) config.getServletContext().getAttribute("applicationContext");
   }
 }
