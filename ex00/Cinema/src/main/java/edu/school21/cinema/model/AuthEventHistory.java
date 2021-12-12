@@ -1,13 +1,13 @@
 package edu.school21.cinema.model;
 
 import java.sql.Timestamp;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@NoArgsConstructor
 public class AuthEventHistory {
 
   private long eventId;

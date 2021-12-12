@@ -1,12 +1,12 @@
 package edu.school21.cinema.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@NoArgsConstructor
 public class CinemaUser {
 
   private long userId;

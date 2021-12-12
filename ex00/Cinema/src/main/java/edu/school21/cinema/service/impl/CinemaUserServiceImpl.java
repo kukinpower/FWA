@@ -14,6 +14,6 @@ public class CinemaUserServiceImpl implements CinemaUserService {
 
   @Override
   public CinemaUser save(CinemaUser cinemaUser) {
-    return cinemaUser;
+    return cinemaUserRepository.save(cinemaUser);
   }
 }
