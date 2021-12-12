@@ -1,6 +1,5 @@
 package edu.school21.cinema.model;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CinemaUser {
 
-  private long id;
+  private long userId;
   private String firstName;
   private String lastName;
   private String phoneNumber;
