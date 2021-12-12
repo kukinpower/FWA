@@ -38,6 +38,7 @@
         <button type="submit">Register</button>
     </div>
 </form>
-
+<br>
+<a href="${pageContext.request.contextPath}/">Home page</a>
 </body>
 </html>

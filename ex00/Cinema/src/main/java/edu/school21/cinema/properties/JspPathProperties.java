@@ -20,4 +20,7 @@ public class JspPathProperties {
 
   @Value("${jsp.path.profile}")
   private String profile;
+
+  @Value("${jsp.path.home}")
+  private String home;
 }

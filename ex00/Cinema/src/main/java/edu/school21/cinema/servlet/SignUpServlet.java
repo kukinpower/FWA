@@ -3,6 +3,7 @@ package edu.school21.cinema.servlet;
 import edu.school21.cinema.model.CinemaUser;
 import edu.school21.cinema.properties.JspPathProperties;
 import edu.school21.cinema.service.CinemaUserService;
+import edu.school21.cinema.service.PasswordEncoderService;
 import edu.school21.cinema.service.impl.CinemaUserServiceImpl;
 import edu.school21.cinema.type.ContentType;
 import java.io.IOException;
@@ -22,40 +23,50 @@ public class SignUpServlet extends HttpServlet {
 
   private ApplicationContext applicationContext;
   private CinemaUserService cinemaUserService;
+  private PasswordEncoderService passwordEncoderService;
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
     resp.setContentType(ContentType.HTML.getType());
 
-    String signUpPath = ((JspPathProperties) applicationContext.getBean("jspPathProperties")).getSignUp();
+    String signUpPath = ((JspPathProperties) applicationContext.getBean(
+        "jspPathProperties")).getSignUp();
     RequestDispatcher requestDispatcher = req.getRequestDispatcher(signUpPath);
     requestDispatcher.forward(req, resp);
   }
 
   @Override
-  protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-      throws IOException {
-
-    if (cinemaUserService == null) {
-      cinemaUserService = applicationContext.getBean("cinemaUserService", CinemaUserService.class);
-    }
+  protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    getBeansFromSpringApplicationContext();
 
     CinemaUser user = cinemaUserService.save(new CinemaUser(req.getParameter("first-name")
         , req.getParameter("last-name")
         , req.getParameter("phone-number")
         , req.getParameter("email")
-        , req.getParameter("password")));
+        , passwordEncoderService.encode(req.getParameter("password"))
+    ));
 
-    // todo signUp
+    // todo signUp req.getRemoteAddr()
 
     HttpSession httpSession = req.getSession();
     httpSession.setAttribute("email", user.getEmail());
     resp.sendRedirect("/profile");
   }
 
+  private void getBeansFromSpringApplicationContext() {
+    if (cinemaUserService == null) {
+      cinemaUserService = applicationContext.getBean("cinemaUserService", CinemaUserService.class);
+    }
+    if (passwordEncoderService == null) {
+      passwordEncoderService = applicationContext.getBean("passwordEncoderService",
+          PasswordEncoderService.class);
+    }
+  }
+
   @Override
   public void init(ServletConfig config) {
-    applicationContext = (ApplicationContext) config.getServletContext().getAttribute("applicationContext");
+    applicationContext = (ApplicationContext) config.getServletContext()
+        .getAttribute("applicationContext");
   }
 }
