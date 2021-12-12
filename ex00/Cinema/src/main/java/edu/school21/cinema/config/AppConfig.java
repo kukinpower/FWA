@@ -26,6 +26,8 @@ public class AppConfig {
     hikariConfig.setUsername(dataSourceProperties.getUsername());
     hikariConfig.setPassword(dataSourceProperties.getPassword());
     hikariConfig.setDriverClassName(dataSourceProperties.getDriverClassName());
+    hikariConfig.setConnectionTimeout(dataSourceProperties.getConnectionTimeout());
+
     return new HikariDataSource(hikariConfig);
   }
 
