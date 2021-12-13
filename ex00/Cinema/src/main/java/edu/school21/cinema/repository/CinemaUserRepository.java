@@ -5,7 +5,7 @@ import java.util.Optional;
 
 public interface CinemaUserRepository {
 
-  CinemaUser save(CinemaUser cinemaUser);
+  Optional<CinemaUser> save(CinemaUser cinemaUser);
 
   Optional<CinemaUser> findByEmail(String email);
 }

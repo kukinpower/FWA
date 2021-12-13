@@ -1,5 +1,6 @@
 package edu.school21.cinema.service.impl;
 
+import edu.school21.cinema.exception.NoCinemaUserSavedException;
 import edu.school21.cinema.model.CinemaUser;
 import edu.school21.cinema.repository.CinemaUserRepository;
 import edu.school21.cinema.service.CinemaUserService;
@@ -14,6 +15,7 @@ public class CinemaUserServiceImpl implements CinemaUserService {
 
   @Override
   public CinemaUser save(CinemaUser cinemaUser) {
-    return cinemaUserRepository.save(cinemaUser);
+    return cinemaUserRepository.save(cinemaUser)
+        .orElseThrow(NoCinemaUserSavedException::new);
   }
 }
