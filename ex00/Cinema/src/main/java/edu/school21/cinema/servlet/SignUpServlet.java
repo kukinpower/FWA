@@ -1,13 +1,17 @@
 package edu.school21.cinema.servlet;
 
+import edu.school21.cinema.model.AuthEventHistory;
 import edu.school21.cinema.model.CinemaUser;
 import edu.school21.cinema.properties.JspPathProperties;
+import edu.school21.cinema.service.AuthHistoryService;
 import edu.school21.cinema.service.CinemaUserService;
 import edu.school21.cinema.service.PasswordEncoderService;
 import edu.school21.cinema.service.impl.CinemaUserServiceImpl;
 import edu.school21.cinema.type.ContentType;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -23,6 +27,7 @@ public class SignUpServlet extends HttpServlet {
 
   private ApplicationContext applicationContext;
   private CinemaUserService cinemaUserService;
+  private AuthHistoryService authHistoryService;
   private PasswordEncoderService passwordEncoderService;
 
   @Override
@@ -40,12 +45,16 @@ public class SignUpServlet extends HttpServlet {
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     getBeansFromSpringApplicationContext();
 
+    Timestamp createdAt = Timestamp.valueOf(LocalDateTime.now());
+
     CinemaUser user = cinemaUserService.save(new CinemaUser(req.getParameter("first-name")
         , req.getParameter("last-name")
         , req.getParameter("phone-number")
         , req.getParameter("email")
         , passwordEncoderService.encode(req.getParameter("password"))
     ));
+
+    AuthEventHistory authEventHistory = authHistoryService.saveSignUpEvent(user, createdAt, req.getRemoteAddr());
 
     // todo signUp req.getRemoteAddr()
 
@@ -61,6 +70,10 @@ public class SignUpServlet extends HttpServlet {
     if (passwordEncoderService == null) {
       passwordEncoderService = applicationContext.getBean("passwordEncoderService",
           PasswordEncoderService.class);
+    }
+    if (authHistoryService == null) {
+      authHistoryService = applicationContext.getBean("authHistoryService",
+          AuthHistoryService.class);
     }
   }
 
