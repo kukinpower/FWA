@@ -38,14 +38,11 @@ public class AuthHistoryRepositoryImpl implements AuthHistoryRepository {
       return statement;
     }, holder);
 
-    long primaryKey = Objects.requireNonNull(holder.getKey()).longValue();
+    long primaryKey = (Long)Objects.requireNonNull(holder.getKeys()).get("event_id");
     if (update == 0) {
       return Optional.empty();
     }
     authEventHistory.setEventId(primaryKey);
     return Optional.of(authEventHistory);
   }
-
-
-
 }

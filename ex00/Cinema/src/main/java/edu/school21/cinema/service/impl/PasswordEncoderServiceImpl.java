@@ -4,7 +4,7 @@ import edu.school21.cinema.service.PasswordEncoderService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service("passwordEncoderService")
 public class PasswordEncoderServiceImpl implements PasswordEncoderService {
 
   private final BCryptPasswordEncoder bCryptPasswordEncoder;

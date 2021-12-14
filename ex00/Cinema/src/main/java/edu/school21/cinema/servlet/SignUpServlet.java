@@ -47,7 +47,8 @@ public class SignUpServlet extends HttpServlet {
 
     Timestamp createdAt = Timestamp.valueOf(LocalDateTime.now());
 
-    CinemaUser user = cinemaUserService.save(new CinemaUser(req.getParameter("first-name")
+    CinemaUser user = cinemaUserService.save(
+        new CinemaUser(req.getParameter("first-name")
         , req.getParameter("last-name")
         , req.getParameter("phone-number")
         , req.getParameter("email")
@@ -55,8 +56,6 @@ public class SignUpServlet extends HttpServlet {
     ));
 
     AuthEventHistory authEventHistory = authHistoryService.saveSignUpEvent(user, createdAt, req.getRemoteAddr());
-
-    // todo signUp req.getRemoteAddr()
 
     HttpSession httpSession = req.getSession();
     httpSession.setAttribute("email", user.getEmail());
