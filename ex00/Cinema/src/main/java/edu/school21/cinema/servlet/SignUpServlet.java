@@ -55,7 +55,7 @@ public class SignUpServlet extends HttpServlet {
         , passwordEncoderService.encode(req.getParameter("password"))
     ));
 
-    AuthEventHistory authEventHistory = authHistoryService.saveSignUpEvent(user, createdAt, req.getRemoteAddr());
+    authHistoryService.saveSignUpEvent(user, createdAt, req.getRemoteAddr());
 
     HttpSession httpSession = req.getSession();
     httpSession.setAttribute("email", user.getEmail());
