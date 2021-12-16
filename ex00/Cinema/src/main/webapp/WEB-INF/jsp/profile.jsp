@@ -13,7 +13,8 @@
 </head>
 <body>
 <div>
-    <img src="${profileImage}" alt="profile image">
+    <img src="${profileImage}" alt="profile image"
+    style="max-width: 200px;max-height: 350px">
 </div>
 <div>
     <table>
