@@ -23,4 +23,7 @@ public class JspPathProperties {
 
   @Value("${jsp.path.home}")
   private String home;
+
+  @Value("${jsp.path.default-image}")
+  private String defaultImage;
 }

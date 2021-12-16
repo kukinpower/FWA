@@ -9,22 +9,29 @@
 <html>
 <head>
     <title>Profile</title>
-    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 </head>
 <body>
-<table>
-    <tr>
-        <th>DateTime</th>
-        <th>Type</th>
-        <th>IP</th>
-    </tr>
-    <c:forEach items="${authEvents}" var="authEvents" varStatus="status">
+<div>
+    <img src="${profileImage}" alt="profile image">
+</div>
+<div>
+    <table>
         <tr>
-            <td>${authEvents.eventTime}</td>
-            <td>${authEvents.eventType}</td>
-            <td>${authEvents.ipAddress}</td>
+            <th>DateTime</th>
+            <th>Type</th>
+            <th>IP</th>
         </tr>
-    </c:forEach>
-</table>
+        <jsp:useBean id="authEvents" scope="request" type="java.util.List"/>
+        <c:forEach items="${authEvents}" var="authEvents" varStatus="status">
+            <tr>
+                <td>${authEvents.eventTime}</td>
+                <td>${authEvents.eventType}</td>
+                <td>${authEvents.ipAddress}</td>
+            </tr>
+        </c:forEach>
+    </table>
+</div>
+
 </body>
 </html>
