@@ -1,17 +1,13 @@
 package edu.school21.cinema.repository.impl;
 
 import edu.school21.cinema.model.AuthEventHistory;
-import edu.school21.cinema.model.CinemaUser;
 import edu.school21.cinema.repository.AuthHistoryRepository;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Objects;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.stereotype.Repository;
 

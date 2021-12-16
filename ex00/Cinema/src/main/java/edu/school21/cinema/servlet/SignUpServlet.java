@@ -1,15 +1,12 @@
 package edu.school21.cinema.servlet;
 
-import edu.school21.cinema.model.AuthEventHistory;
 import edu.school21.cinema.model.CinemaUser;
 import edu.school21.cinema.properties.JspPathProperties;
 import edu.school21.cinema.service.AuthHistoryService;
 import edu.school21.cinema.service.CinemaUserService;
 import edu.school21.cinema.service.PasswordEncoderService;
-import edu.school21.cinema.service.impl.CinemaUserServiceImpl;
 import edu.school21.cinema.type.ContentType;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import javax.servlet.RequestDispatcher;

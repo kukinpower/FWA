@@ -10,17 +10,8 @@ import org.springframework.context.annotation.Configuration;
 @Setter
 @NoArgsConstructor
 @Configuration
-public class JspPathProperties {
+public class UserImageProperties {
 
-  @Value("${jsp.path.sign-up}")
-  private String signUp;
-
-  @Value("${jsp.path.sign-in}")
-  private String signIn;
-
-  @Value("${jsp.path.profile}")
-  private String profile;
-
-  @Value("${jsp.path.home}")
-  private String home;
+  @Value("${user-image.default-image}")
+  private String defaultImage;
 }
