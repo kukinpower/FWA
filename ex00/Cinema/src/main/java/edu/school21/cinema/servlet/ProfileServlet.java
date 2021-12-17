@@ -19,6 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.springframework.context.ApplicationContext;
 
 @WebServlet("/profile")
@@ -33,7 +34,8 @@ public class ProfileServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
-    String emailToken = (String) req.getAttribute("emailToken");
+    HttpSession session = req.getSession();
+    String emailToken = (String) session.getAttribute("emailToken");
     CinemaUser cinemaUser = cinemaUserService.findByEmail(emailToken);
 
     resp.setContentType(ContentType.HTML.getType());

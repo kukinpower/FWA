@@ -23,7 +23,10 @@ public class InitDbServiceImpl implements InitDbService {
   @PostConstruct
   public void init() {
     runSqlScript("sql/schema.sql");
-    runSqlScript("sql/data.sql");
+
+    if (System.getenv().containsKey("INIT_DATA")) {
+      runSqlScript("sql/data.sql");
+    }
   }
 
   private void runSqlScript(String pathToScript) {

@@ -14,6 +14,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationContext;
@@ -31,15 +32,17 @@ public class UploadImageServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
-    String emailToken = (String) req.getAttribute("emailToken");
+    HttpSession session = req.getSession();
+    String emailToken = (String) session.getAttribute("emailToken");
     CinemaUser cinemaUser = cinemaUserService.findByEmail(emailToken);
+
     File directory = userImagesService.getUserImageDirectory(cinemaUser);
 
     writeImageToUserDirectory(req, directory, cinemaUser);
 
     cinemaUserService.updateCinemaUser(cinemaUser);
 
-    resp.sendRedirect(jspPathProperties.getProfile());
+    resp.sendRedirect("/profile");
   }
 
   private CinemaUser writeImageToUserDirectory(HttpServletRequest req, File directory, CinemaUser cinemaUser) {

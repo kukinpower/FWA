@@ -6,6 +6,7 @@ import edu.school21.cinema.model.CinemaUser;
 import edu.school21.cinema.properties.UserImageProperties;
 import edu.school21.cinema.service.UserImagesService;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -24,8 +25,9 @@ public class UserImagesServiceImpl implements UserImagesService {
   @Override
   public String getUserImage(HttpServletRequest req, CinemaUser cinemaUser) {
     try {
-      return readDefaultImageToString(req, cinemaUser.getImageFilename());
+      return readImageToString(req, cinemaUser);
     } catch (IOException e) {
+      e.printStackTrace();
       throw new UserImageReadingException();
     }
   }
@@ -53,12 +55,25 @@ public class UserImagesServiceImpl implements UserImagesService {
     return userImageProperties.getDefaultImageFilename();
   }
 
-  private String readDefaultImageToString(HttpServletRequest req, String filename) throws IOException {
-    InputStream resourceAsStream = req.getServletContext()
-        .getResourceAsStream(userImageProperties.getImagesPrefix() + filename);
-    byte[] bytes = new byte[resourceAsStream.available()];
+  /*
+     String fullPath = req.getServletContext()
+        .getRealPath(userImageProperties.getImagesPrefix()) +
+        (userImageProperties.getDefaultImageFilename()
+            .equals(cinemaUser.getImageFilename()) ? cinemaUser.getImageFilename() :
+            cinemaUser.getUserId() + "/" + cinemaUser.getImageFilename());
+   */
 
-    int read = resourceAsStream.read(bytes);
+  private String readImageToString(HttpServletRequest req, CinemaUser cinemaUser) throws IOException {
+    String filename = userImageProperties.getDefaultImageFilename()
+        .equals(cinemaUser.getImageFilename()) ? cinemaUser.getImageFilename() :
+        cinemaUser.getUserId() + "/" + cinemaUser.getImageFilename();
+
+    File image = new File(userImageProperties.getImagesPrefix() + filename);
+    FileInputStream fileInputStream = new FileInputStream(image);
+
+    byte[] bytes = new byte[fileInputStream.available()];
+
+    int read = fileInputStream.read(bytes);
     if (read == 0) {
       throw new UserImageReadingException();
     }
