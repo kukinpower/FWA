@@ -1,6 +1,7 @@
 package edu.school21.cinema.servlet;
 
 import edu.school21.cinema.model.AuthEventHistory;
+import edu.school21.cinema.model.CinemaUser;
 import edu.school21.cinema.properties.JspPathProperties;
 import edu.school21.cinema.service.AuthHistoryService;
 import edu.school21.cinema.service.CinemaUserService;
@@ -32,6 +33,9 @@ public class ProfileServlet extends HttpServlet {
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
+    String emailToken = (String) req.getAttribute("emailToken");
+    CinemaUser cinemaUser = cinemaUserService.findByEmail(emailToken);
+
     resp.setContentType(ContentType.HTML.getType());
 
     List<AuthEventHistory> authEvents = new ArrayList<>();
@@ -42,7 +46,7 @@ public class ProfileServlet extends HttpServlet {
     authEvents.add(authEventHistory);
     authEvents.add(authEventHistory);
 
-    req.setAttribute("profileImage", userImagesService.getUserImage(req));
+    req.setAttribute("profileImage", userImagesService.getUserImage(req, cinemaUser));
     req.setAttribute("userEmail", "some@mail.com");
     req.setAttribute("authEvents", authEvents);
     req.setAttribute("imagesHistoryList", userImagesService.getImagesHistoryList());

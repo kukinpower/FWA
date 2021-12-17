@@ -18,4 +18,16 @@ public class CinemaUserServiceImpl implements CinemaUserService {
     return cinemaUserRepository.save(cinemaUser)
         .orElseThrow(NoCinemaUserSavedException::new);
   }
+
+  @Override
+  public CinemaUser findByEmail(String emailToken) {
+    return cinemaUserRepository.findByEmail(emailToken)
+        .orElseThrow(NoCinemaUserSavedException::new);
+  }
+
+  @Override
+  public CinemaUser updateCinemaUser(CinemaUser cinemaUser) {
+    return cinemaUserRepository.updateCinemaUser(cinemaUser)
+        .orElseThrow(NoCinemaUserSavedException::new);
+  }
 }

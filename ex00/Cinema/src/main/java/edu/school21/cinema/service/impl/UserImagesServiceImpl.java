@@ -2,8 +2,10 @@ package edu.school21.cinema.service.impl;
 
 import edu.school21.cinema.dto.ImagesHistoryDto;
 import edu.school21.cinema.exception.UserImageReadingException;
+import edu.school21.cinema.model.CinemaUser;
 import edu.school21.cinema.properties.UserImageProperties;
 import edu.school21.cinema.service.UserImagesService;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -20,9 +22,9 @@ public class UserImagesServiceImpl implements UserImagesService {
   private final UserImageProperties userImageProperties;
 
   @Override
-  public String getUserImage(HttpServletRequest req) {
+  public String getUserImage(HttpServletRequest req, CinemaUser cinemaUser) {
     try {
-      return readDefaultImageToString(req, userImageProperties.getDefaultImageFilename());
+      return readDefaultImageToString(req, cinemaUser.getImageFilename());
     } catch (IOException e) {
       throw new UserImageReadingException();
     }
@@ -35,6 +37,15 @@ public class UserImagesServiceImpl implements UserImagesService {
     imagesHistoryList.add(new ImagesHistoryDto("next.jpeg", "3Mb", "image/jpeg"));
 
     return imagesHistoryList;
+  }
+
+  @Override
+  public File getUserImageDirectory(CinemaUser cinemaUser) {
+    File directory = new File(userImageProperties.getImagesPrefix() + cinemaUser.getUserId());
+    if (!directory.exists()) {
+      directory.mkdir();
+    }
+    return directory;
   }
 
   @Override

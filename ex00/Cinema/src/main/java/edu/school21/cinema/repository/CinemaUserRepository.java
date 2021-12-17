@@ -8,4 +8,6 @@ public interface CinemaUserRepository {
   Optional<CinemaUser> save(CinemaUser cinemaUser);
 
   Optional<CinemaUser> findByEmail(String email);
+
+  Optional<CinemaUser> updateCinemaUser(CinemaUser cinemaUser);
 }

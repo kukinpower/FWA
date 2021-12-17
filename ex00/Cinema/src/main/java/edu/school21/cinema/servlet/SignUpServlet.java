@@ -42,8 +42,6 @@ public class SignUpServlet extends HttpServlet {
 
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-    getBeansFromSpringApplicationContext();
-
     Timestamp createdAt = Timestamp.valueOf(LocalDateTime.now());
 
     CinemaUser user = cinemaUserService.save(
@@ -58,8 +56,15 @@ public class SignUpServlet extends HttpServlet {
     authHistoryService.saveSignUpEvent(user, createdAt, req.getRemoteAddr());
 
     HttpSession httpSession = req.getSession();
-    httpSession.setAttribute("email", user.getEmail());
+    httpSession.setAttribute("emailToken", user.getEmail());
     resp.sendRedirect("/profile");
+  }
+
+  @Override
+  public void init(ServletConfig config) {
+    applicationContext = (ApplicationContext) config.getServletContext()
+        .getAttribute("applicationContext");
+    getBeansFromSpringApplicationContext();
   }
 
   private void getBeansFromSpringApplicationContext() {
@@ -75,11 +80,5 @@ public class SignUpServlet extends HttpServlet {
     if (userImagesService == null) {
       userImagesService = applicationContext.getBean("userImagesService", UserImagesService.class);
     }
-  }
-
-  @Override
-  public void init(ServletConfig config) {
-    applicationContext = (ApplicationContext) config.getServletContext()
-        .getAttribute("applicationContext");
   }
 }

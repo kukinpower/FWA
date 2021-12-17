@@ -22,8 +22,11 @@ public class CinemaUserRepositoryImpl implements CinemaUserRepository {
 
   private static final String FIND_BY_EMAIL_QUERY = "select * from cinema_users where email = ? limit 1";
   private static final String SAVE_USER_QUERY = "insert into cinema_users "
-      + "(email, password, first_name, last_name, phone_number)\n"
-      + "values (?, ?, ?, ?, ?);";
+      + "(email, password, first_name, last_name, phone_number, image_filename)\n"
+      + "values (?, ?, ?, ?, ?, ?);";
+  private static final String UPDATE_USER_QUERY = "update cinema_users\n"
+      + "set email=?, password=?, first_name=?, last_name=?, phone_number=?, image_filename=?\n"
+      + "where user_id=?;";
 
   @Override
   public Optional<CinemaUser> save(CinemaUser cinemaUser) {
@@ -36,6 +39,7 @@ public class CinemaUserRepositoryImpl implements CinemaUserRepository {
       statement.setString(3, cinemaUser.getFirstName());
       statement.setString(4, cinemaUser.getLastName());
       statement.setString(5, cinemaUser.getPhoneNumber());
+      statement.setString(6, cinemaUser.getImageFilename());
       return statement;
     }, holder);
 
@@ -58,5 +62,31 @@ public class CinemaUserRepositoryImpl implements CinemaUserRepository {
       log.error("Not found for email: " + email);
       return Optional.empty();
     }
+  }
+
+  @Override
+  public Optional<CinemaUser> updateCinemaUser(CinemaUser cinemaUser) {
+    GeneratedKeyHolder holder = new GeneratedKeyHolder();
+
+    int update = jdbcTemplate.update(con -> {
+      PreparedStatement statement = con.prepareStatement(UPDATE_USER_QUERY, Statement.RETURN_GENERATED_KEYS);
+      statement.setString(1, cinemaUser.getEmail());
+      statement.setString(2, cinemaUser.getPassword());
+      statement.setString(3, cinemaUser.getFirstName());
+      statement.setString(4, cinemaUser.getLastName());
+      statement.setString(5, cinemaUser.getPhoneNumber());
+      statement.setString(6, cinemaUser.getImageFilename());
+      statement.setLong(7, cinemaUser.getUserId());
+      return statement;
+    }, holder);
+
+
+    long primaryKey = (Long)Objects.requireNonNull(holder.getKeys()).get("user_id");
+    if (update == 0) {
+      return Optional.empty();
+    }
+    cinemaUser.setUserId(primaryKey);
+
+    return Optional.of(cinemaUser);
   }
 }
