@@ -1,11 +1,12 @@
 create table if not exists "cinema_users"
 (
-    "user_id"      bigserial PRIMARY KEY,
-    "email"        text,
-    "password"     text,
-    "first_name"   text,
-    "last_name"    text,
-    "phone_number" text
+    "user_id"        bigserial PRIMARY KEY,
+    "email"          text,
+    "password"       text,
+    "first_name"     text,
+    "last_name"      text,
+    "phone_number"   text,
+    "image_filename" text
 );
 
 create table if not exists "auth_event_history"

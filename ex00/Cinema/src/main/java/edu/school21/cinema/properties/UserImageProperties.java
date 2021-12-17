@@ -12,6 +12,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class UserImageProperties {
 
-  @Value("${user-image.default-image}")
-  private String defaultImage;
+  @Value("${user-image.default-image-filename}")
+  private String defaultImageFilename;
+
+  @Value("${user-image.images-prefix}")
+  private String imagesPrefix;
 }

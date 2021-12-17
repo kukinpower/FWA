@@ -14,8 +14,16 @@
 <body>
 <div style="display: flex;">
     <div>
-        <img src="${profileImage}" alt="profile image"
-             style="max-width: 200px;max-height: 350px">
+        <div>
+            <img src="${profileImage}" alt="profile image"
+                 style="max-width: 200px;max-height: 350px">
+        </div>
+        <div>
+            <form action="${pageContext.request.contextPath}/uploadImage" enctype="multipart/form-data" method="post">
+                <input type="file" id="image" name="image" accept="image/*">
+                <button type="submit">Upload</button>
+            </form>
+        </div>
     </div>
     <div style="margin-left: 100px">
         <h2>Hello!</h2>

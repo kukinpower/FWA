@@ -15,13 +15,15 @@ public class CinemaUser {
   private String phoneNumber;
   private String email;
   private String password;
+  private String imageFilename;
 
   public CinemaUser(String firstName, String lastName, String phoneNumber, String email,
-      String password) {
+      String password, String imageFilename) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.phoneNumber = phoneNumber;
     this.email = email;
     this.password = password;
+    this.imageFilename = imageFilename;
   }
 }

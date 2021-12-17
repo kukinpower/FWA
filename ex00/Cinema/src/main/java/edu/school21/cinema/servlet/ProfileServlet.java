@@ -1,6 +1,5 @@
 package edu.school21.cinema.servlet;
 
-import edu.school21.cinema.dto.ImagesHistoryDto;
 import edu.school21.cinema.model.AuthEventHistory;
 import edu.school21.cinema.properties.JspPathProperties;
 import edu.school21.cinema.service.AuthHistoryService;
@@ -43,14 +42,10 @@ public class ProfileServlet extends HttpServlet {
     authEvents.add(authEventHistory);
     authEvents.add(authEventHistory);
 
-    List<ImagesHistoryDto> imagesHistoryList = new ArrayList<>();
-    imagesHistoryList.add(new ImagesHistoryDto("some.png", "10Kb", "image/png"));
-    imagesHistoryList.add(new ImagesHistoryDto("next.jpeg", "3Mb", "image/jpeg"));
-
     req.setAttribute("profileImage", userImagesService.getUserImage(req));
     req.setAttribute("userEmail", "some@mail.com");
     req.setAttribute("authEvents", authEvents);
-    req.setAttribute("imagesHistoryList", imagesHistoryList);
+    req.setAttribute("imagesHistoryList", userImagesService.getImagesHistoryList());
 
     RequestDispatcher requestDispatcher = req.getRequestDispatcher(jspPathProperties.getProfile());
     requestDispatcher.forward(req, resp);

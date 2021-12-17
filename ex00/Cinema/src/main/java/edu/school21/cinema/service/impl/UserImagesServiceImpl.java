@@ -1,11 +1,14 @@
 package edu.school21.cinema.service.impl;
 
+import edu.school21.cinema.dto.ImagesHistoryDto;
 import edu.school21.cinema.exception.UserImageReadingException;
 import edu.school21.cinema.properties.UserImageProperties;
 import edu.school21.cinema.service.UserImagesService;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,15 +22,31 @@ public class UserImagesServiceImpl implements UserImagesService {
   @Override
   public String getUserImage(HttpServletRequest req) {
     try {
-      return readDefaultImageToString(req, userImageProperties.getDefaultImage());
+      return readDefaultImageToString(req, userImageProperties.getDefaultImageFilename());
     } catch (IOException e) {
       throw new UserImageReadingException();
     }
   }
 
-  private String readDefaultImageToString(HttpServletRequest req, String path) throws IOException {
-    InputStream resourceAsStream = req.getServletContext().getResourceAsStream(path);
+  @Override
+  public List<ImagesHistoryDto> getImagesHistoryList() {
+    List<ImagesHistoryDto> imagesHistoryList = new ArrayList<>();
+    imagesHistoryList.add(new ImagesHistoryDto("some.png", "10Kb", "image/png"));
+    imagesHistoryList.add(new ImagesHistoryDto("next.jpeg", "3Mb", "image/jpeg"));
+
+    return imagesHistoryList;
+  }
+
+  @Override
+  public String getDefaultUserImageFilename() {
+    return userImageProperties.getDefaultImageFilename();
+  }
+
+  private String readDefaultImageToString(HttpServletRequest req, String filename) throws IOException {
+    InputStream resourceAsStream = req.getServletContext()
+        .getResourceAsStream(userImageProperties.getImagesPrefix() + filename);
     byte[] bytes = new byte[resourceAsStream.available()];
+
     int read = resourceAsStream.read(bytes);
     if (read == 0) {
       throw new UserImageReadingException();

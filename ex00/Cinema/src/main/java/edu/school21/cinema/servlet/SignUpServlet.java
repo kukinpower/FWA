@@ -5,6 +5,7 @@ import edu.school21.cinema.properties.JspPathProperties;
 import edu.school21.cinema.service.AuthHistoryService;
 import edu.school21.cinema.service.CinemaUserService;
 import edu.school21.cinema.service.PasswordEncoderService;
+import edu.school21.cinema.service.UserImagesService;
 import edu.school21.cinema.type.ContentType;
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -26,6 +27,7 @@ public class SignUpServlet extends HttpServlet {
   private CinemaUserService cinemaUserService;
   private AuthHistoryService authHistoryService;
   private PasswordEncoderService passwordEncoderService;
+  private UserImagesService userImagesService;
 
   @Override
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -50,6 +52,7 @@ public class SignUpServlet extends HttpServlet {
         , req.getParameter("phone-number")
         , req.getParameter("email")
         , passwordEncoderService.encode(req.getParameter("password"))
+        , userImagesService.getDefaultUserImageFilename()
     ));
 
     authHistoryService.saveSignUpEvent(user, createdAt, req.getRemoteAddr());
@@ -64,12 +67,13 @@ public class SignUpServlet extends HttpServlet {
       cinemaUserService = applicationContext.getBean("cinemaUserService", CinemaUserService.class);
     }
     if (passwordEncoderService == null) {
-      passwordEncoderService = applicationContext.getBean("passwordEncoderService",
-          PasswordEncoderService.class);
+      passwordEncoderService = applicationContext.getBean("passwordEncoderService", PasswordEncoderService.class);
     }
     if (authHistoryService == null) {
-      authHistoryService = applicationContext.getBean("authHistoryService",
-          AuthHistoryService.class);
+      authHistoryService = applicationContext.getBean("authHistoryService", AuthHistoryService.class);
+    }
+    if (userImagesService == null) {
+      userImagesService = applicationContext.getBean("userImagesService", UserImagesService.class);
     }
   }
 

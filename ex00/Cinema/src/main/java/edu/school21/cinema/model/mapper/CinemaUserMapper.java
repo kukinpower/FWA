@@ -17,6 +17,7 @@ public class CinemaUserMapper implements RowMapper<CinemaUser> {
     cinemaUser.setFirstName(rs.getString("first_name"));
     cinemaUser.setLastName(rs.getString("last_name"));
     cinemaUser.setPhoneNumber(rs.getString("phone_number"));
+    cinemaUser.setImageFilename(rs.getString("image_filename"));
 
     return cinemaUser;
   }
