@@ -4,15 +4,14 @@ import edu.school21.cinema.dto.ImagesHistoryDto;
 import edu.school21.cinema.model.CinemaUser;
 import java.io.File;
 import java.util.List;
-import javax.servlet.http.HttpServletRequest;
 
 public interface UserImagesService {
 
-  String getUserImage(HttpServletRequest req, CinemaUser cinemaUser);
+  String getUserImage(CinemaUser cinemaUser);
 
   String getDefaultUserImageFilename();
 
-  List<ImagesHistoryDto> getImagesHistoryList();
+  List<ImagesHistoryDto> getUserImagesHistoryList(CinemaUser cinemaUser);
 
   File getUserImageDirectory(CinemaUser cinemaUser);
 }

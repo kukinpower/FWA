@@ -1,5 +1,6 @@
 package edu.school21.cinema.servlet;
 
+import edu.school21.cinema.exception.NoCinemaUserFoundException;
 import edu.school21.cinema.model.AuthEventHistory;
 import edu.school21.cinema.model.CinemaUser;
 import edu.school21.cinema.properties.JspPathProperties;
@@ -8,9 +9,6 @@ import edu.school21.cinema.service.CinemaUserService;
 import edu.school21.cinema.service.UserImagesService;
 import edu.school21.cinema.type.ContentType;
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
@@ -36,22 +34,17 @@ public class ProfileServlet extends HttpServlet {
       throws ServletException, IOException {
     HttpSession session = req.getSession();
     String emailToken = (String) session.getAttribute("emailToken");
-    CinemaUser cinemaUser = cinemaUserService.findByEmail(emailToken);
+    CinemaUser cinemaUser = cinemaUserService.findByEmail(emailToken).orElseThrow(
+        NoCinemaUserFoundException::new);
+
+    List<AuthEventHistory> authEvents = authHistoryService.findAllByUserId(cinemaUser.getUserId());
 
     resp.setContentType(ContentType.HTML.getType());
 
-    List<AuthEventHistory> authEvents = new ArrayList<>();
-    AuthEventHistory authEventHistory = new AuthEventHistory();
-    authEventHistory.setEventType("Registration");
-    authEventHistory.setEventTime(Timestamp.valueOf(LocalDateTime.now()));
-    authEventHistory.setIpAddress("127.0.0.1");
-    authEvents.add(authEventHistory);
-    authEvents.add(authEventHistory);
-
-    req.setAttribute("profileImage", userImagesService.getUserImage(req, cinemaUser));
-    req.setAttribute("userEmail", "some@mail.com");
+    req.setAttribute("profileImage", userImagesService.getUserImage(cinemaUser));
+    req.setAttribute("userEmail", cinemaUser.getEmail());
     req.setAttribute("authEvents", authEvents);
-    req.setAttribute("imagesHistoryList", userImagesService.getImagesHistoryList());
+    req.setAttribute("imagesHistoryList", userImagesService.getUserImagesHistoryList(cinemaUser));
 
     RequestDispatcher requestDispatcher = req.getRequestDispatcher(jspPathProperties.getProfile());
     requestDispatcher.forward(req, resp);

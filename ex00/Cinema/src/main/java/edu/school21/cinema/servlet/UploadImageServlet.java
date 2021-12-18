@@ -1,6 +1,7 @@
 package edu.school21.cinema.servlet;
 
 import edu.school21.cinema.exception.CouldntWriteImageOnDiskException;
+import edu.school21.cinema.exception.NoCinemaUserFoundException;
 import edu.school21.cinema.model.CinemaUser;
 import edu.school21.cinema.properties.JspPathProperties;
 import edu.school21.cinema.service.CinemaUserService;
@@ -34,7 +35,8 @@ public class UploadImageServlet extends HttpServlet {
       throws ServletException, IOException {
     HttpSession session = req.getSession();
     String emailToken = (String) session.getAttribute("emailToken");
-    CinemaUser cinemaUser = cinemaUserService.findByEmail(emailToken);
+    CinemaUser cinemaUser = cinemaUserService.findByEmail(emailToken)
+        .orElseThrow(NoCinemaUserFoundException::new);
 
     File directory = userImagesService.getUserImageDirectory(cinemaUser);
 

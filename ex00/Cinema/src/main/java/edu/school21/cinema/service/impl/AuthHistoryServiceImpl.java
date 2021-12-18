@@ -6,6 +6,7 @@ import edu.school21.cinema.repository.AuthHistoryRepository;
 import edu.school21.cinema.service.AuthHistoryService;
 import edu.school21.cinema.type.AuthEventType;
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -27,5 +28,10 @@ public class AuthHistoryServiceImpl implements AuthHistoryService {
 
     Optional<AuthEventHistory> res = authHistoryRepository.save(authEventHistory);
     return res.orElseThrow(NoSuchElementException::new);
+  }
+
+  @Override
+  public List<AuthEventHistory> findAllByUserId(long cinemaUserId) {
+    return authHistoryRepository.findAllByUserId(cinemaUserId);
   }
 }

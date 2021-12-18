@@ -10,6 +10,11 @@
 <head>
     <title>Profile</title>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+    <style type="text/css">
+      td {
+        padding: 0 15px;
+      }
+    </style>
 </head>
 <body>
 <div style="display: flex;">

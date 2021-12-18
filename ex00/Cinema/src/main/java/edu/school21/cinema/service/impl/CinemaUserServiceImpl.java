@@ -4,6 +4,7 @@ import edu.school21.cinema.exception.NoCinemaUserSavedException;
 import edu.school21.cinema.model.CinemaUser;
 import edu.school21.cinema.repository.CinemaUserRepository;
 import edu.school21.cinema.service.CinemaUserService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,9 +21,8 @@ public class CinemaUserServiceImpl implements CinemaUserService {
   }
 
   @Override
-  public CinemaUser findByEmail(String emailToken) {
-    return cinemaUserRepository.findByEmail(emailToken)
-        .orElseThrow(NoCinemaUserSavedException::new);
+  public Optional<CinemaUser> findByEmail(String emailToken) {
+    return cinemaUserRepository.findByEmail(emailToken);
   }
 
   @Override

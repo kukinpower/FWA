@@ -1,5 +1,6 @@
 package edu.school21.cinema.servlet;
 
+import edu.school21.cinema.exception.UserIsPresentSignUpException;
 import edu.school21.cinema.model.CinemaUser;
 import edu.school21.cinema.properties.JspPathProperties;
 import edu.school21.cinema.service.AuthHistoryService;
@@ -10,6 +11,7 @@ import edu.school21.cinema.type.ContentType;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -43,6 +45,11 @@ public class SignUpServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
     Timestamp createdAt = Timestamp.valueOf(LocalDateTime.now());
+
+    Optional<CinemaUser> cinemaUser = cinemaUserService.findByEmail(req.getParameter("email"));
+    if (cinemaUser.isPresent()) {
+      throw new UserIsPresentSignUpException();
+    }
 
     CinemaUser user = cinemaUserService.save(
         new CinemaUser(req.getParameter("first-name")
