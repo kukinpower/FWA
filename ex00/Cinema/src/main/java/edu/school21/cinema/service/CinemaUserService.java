@@ -10,4 +10,6 @@ public interface CinemaUserService {
   Optional<CinemaUser> findByEmail(String emailToken);
 
   CinemaUser updateCinemaUser(CinemaUser cinemaUser);
+
+  Optional<CinemaUser> signIn(String email, String password);
 }

@@ -8,7 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Profile</title>
+    <h1>Profile</h1>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
     <style type="text/css">
       td {
@@ -29,6 +29,9 @@
                 <button type="submit">Upload</button>
             </form>
         </div>
+        <form class="form-test" action="${pageContext.request.contextPath}/logout" method="post">
+            <h2><input type="submit" value="logout"></h2>
+        </form>
     </div>
     <div style="margin-left: 100px">
         <h2>Hello!</h2>

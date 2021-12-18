@@ -19,19 +19,29 @@ public class AuthHistoryServiceImpl implements AuthHistoryService {
   private final AuthHistoryRepository authHistoryRepository;
 
   @Override
-  public AuthEventHistory saveSignUpEvent(CinemaUser user, Timestamp createdAt, String ipAddress) {
-    AuthEventHistory authEventHistory = new AuthEventHistory();
-    authEventHistory.setEventType(AuthEventType.REGISTRATION.name());
-    authEventHistory.setCinemaUserId(user.getUserId());
-    authEventHistory.setEventTime(createdAt);
-    authEventHistory.setIpAddress(ipAddress);
+  public AuthEventHistory saveSignUpEvent(CinemaUser cinemaUser, Timestamp createdAt, String ipAddress) {
+    return saveEvent(AuthEventType.REGISTRATION, cinemaUser, createdAt, ipAddress);
+  }
 
-    Optional<AuthEventHistory> res = authHistoryRepository.save(authEventHistory);
-    return res.orElseThrow(NoSuchElementException::new);
+  @Override
+  public AuthEventHistory saveSignInEvent(CinemaUser cinemaUser, Timestamp createdAt, String ipAddress) {
+    return saveEvent(AuthEventType.AUTHORISATION, cinemaUser, createdAt, ipAddress);
   }
 
   @Override
   public List<AuthEventHistory> findAllByUserId(long cinemaUserId) {
     return authHistoryRepository.findAllByUserId(cinemaUserId);
+  }
+
+  private AuthEventHistory saveEvent(AuthEventType eventType, CinemaUser cinemaUser, Timestamp createdAt,
+      String ipAddress) {
+    AuthEventHistory authEventHistory = new AuthEventHistory();
+    authEventHistory.setEventType(eventType.name());
+    authEventHistory.setCinemaUserId(cinemaUser.getUserId());
+    authEventHistory.setEventTime(createdAt);
+    authEventHistory.setIpAddress(ipAddress);
+
+    Optional<AuthEventHistory> res = authHistoryRepository.save(authEventHistory);
+    return res.orElseThrow(NoSuchElementException::new);
   }
 }

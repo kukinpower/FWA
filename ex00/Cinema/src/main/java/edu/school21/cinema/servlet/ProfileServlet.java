@@ -7,6 +7,7 @@ import edu.school21.cinema.properties.JspPathProperties;
 import edu.school21.cinema.service.AuthHistoryService;
 import edu.school21.cinema.service.CinemaUserService;
 import edu.school21.cinema.service.UserImagesService;
+import edu.school21.cinema.token.TokenConstant;
 import edu.school21.cinema.type.ContentType;
 import java.io.IOException;
 import java.util.List;
@@ -33,7 +34,7 @@ public class ProfileServlet extends HttpServlet {
   protected void doGet(HttpServletRequest req, HttpServletResponse resp)
       throws ServletException, IOException {
     HttpSession session = req.getSession();
-    String emailToken = (String) session.getAttribute("emailToken");
+    String emailToken = (String) session.getAttribute(TokenConstant.TOKEN);
     CinemaUser cinemaUser = cinemaUserService.findByEmail(emailToken).orElseThrow(
         NoCinemaUserFoundException::new);
 
