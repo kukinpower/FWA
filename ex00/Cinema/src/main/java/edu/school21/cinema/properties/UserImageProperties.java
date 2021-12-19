@@ -15,7 +15,7 @@ public class UserImageProperties {
   @Value("${user-image.default-image-filename}")
   private String defaultImageFilename;
 
-  @Value("${user-image.images-prefix-after-home-path}")
+  @Value("${user-image.storage.path}")
   private String imagesPrefix;
 
   public String getImagesPrefix() {

@@ -1,7 +1,6 @@
 package edu.school21.cinema.service.impl;
 
 import edu.school21.cinema.dto.ImagesHistoryDto;
-import edu.school21.cinema.exception.ReadingUserImagesException;
 import edu.school21.cinema.exception.UserImageReadingException;
 import edu.school21.cinema.model.CinemaUser;
 import edu.school21.cinema.properties.UserImageProperties;
@@ -9,16 +8,12 @@ import edu.school21.cinema.service.UserImagesService;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Service;
@@ -31,12 +26,7 @@ public class UserImagesServiceImpl implements UserImagesService {
 
   @Override
   public String getUserImage(CinemaUser cinemaUser) {
-    try {
-      return readImageToString(cinemaUser);
-    } catch (IOException e) {
-      e.printStackTrace();
-      throw new UserImageReadingException();
-    }
+    return getImageAsBase64String(getFilenameByCinemaUser(cinemaUser));
   }
 
   @Override
@@ -56,7 +46,8 @@ public class UserImagesServiceImpl implements UserImagesService {
   }
 
   private ImagesHistoryDto generateImagesHistoryDtoFromFile(File file) {
-    return new ImagesHistoryDto(file.getName(), getImageSize(file), "image/" + getFileExtension(file));
+    return new ImagesHistoryDto(file.getName(), getImageSize(file),
+        "image/" + getFileExtension(file));
   }
 
   private String getImageSize(File image) {
@@ -77,23 +68,32 @@ public class UserImagesServiceImpl implements UserImagesService {
     return userImageProperties.getDefaultImageFilename();
   }
 
-  private String readImageToString(CinemaUser cinemaUser) throws IOException {
-    String extension = getFileStringExtension(cinemaUser.getImageFilename());
-    String filename = userImageProperties.getDefaultImageFilename()
+  private String getFilenameByCinemaUser(CinemaUser cinemaUser) {
+    return userImageProperties.getDefaultImageFilename()
         .equals(cinemaUser.getImageFilename()) ? cinemaUser.getImageFilename() :
         cinemaUser.getUserId() + "/" + cinemaUser.getImageFilename();
+  }
 
-    File image = new File(userImageProperties.getImagesPrefix() + filename);
-    FileInputStream fileInputStream = new FileInputStream(image);
+  @Override
+  public String getImageAsBase64String(String filename) {
+    try {
+      String extension = getFileStringExtension(filename);
 
-    byte[] bytes = new byte[fileInputStream.available()];
+      File image = new File(userImageProperties.getImagesPrefix() + filename);
+      FileInputStream fileInputStream = new FileInputStream(image);
 
-    int read = fileInputStream.read(bytes);
-    if (read == 0) {
+      byte[] bytes = new byte[fileInputStream.available()];
+
+      int read = fileInputStream.read(bytes);
+      if (read == 0) {
+        throw new UserImageReadingException();
+      }
+
+      return "data:image/" + extension + ";base64," + Base64.getEncoder().encodeToString(bytes);
+    } catch (IOException e) {
+      e.printStackTrace();
       throw new UserImageReadingException();
     }
-
-    return "data:image/" + extension + ";base64," + Base64.getEncoder().encodeToString(bytes);
   }
 
   private String getFileExtension(File file) {

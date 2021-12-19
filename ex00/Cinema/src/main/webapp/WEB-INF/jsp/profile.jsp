@@ -49,7 +49,18 @@
             <jsp:useBean id="imagesHistoryList" scope="request" type="java.util.List"/>
             <c:forEach items="${imagesHistoryList}" var="imagesHistoryList" varStatus="status">
                 <tr>
-                    <td>${imagesHistoryList.filename}</td>
+                    <td>
+                        <c:choose>
+                            <c:when test="${imagesHistoryList.filename=='shades.png'}">
+                                <a href="getImage/${imagesHistoryList.filename}" target="_blank">${imagesHistoryList.filename}</a>
+                                <br />
+                            </c:when>
+                            <c:otherwise>
+                                <a href="getImage/${userId}/${imagesHistoryList.filename}" target="_blank">${imagesHistoryList.filename}</a>
+                                <br />
+                            </c:otherwise>
+                        </c:choose>
+                        </td>
                     <td>${imagesHistoryList.size}</td>
                     <td>${imagesHistoryList.mime}</td>
                 </tr>

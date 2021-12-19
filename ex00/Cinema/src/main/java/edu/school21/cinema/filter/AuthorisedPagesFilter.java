@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebFilter(filterName="authorisedPagesFilter", urlPatterns={"/logout", "/profile", "/uploadImage"})
+@WebFilter(urlPatterns={ "/logout", "/profile", "/uploadImage", "/getImage/*" }, filterName="authorisedPagesFilter")
 public class AuthorisedPagesFilter implements Filter {
 
   @Override

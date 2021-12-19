@@ -14,4 +14,6 @@ public interface UserImagesService {
   List<ImagesHistoryDto> getUserImagesHistoryList(CinemaUser cinemaUser);
 
   File getUserImageDirectory(CinemaUser cinemaUser);
+
+  String getImageAsBase64String(String filename);
 }

@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebFilter(filterName="signUpSignInFilter", urlPatterns={ "/signUp", "/signIn"})
+@WebFilter(urlPatterns={ "/signUp", "/signIn" }, filterName="signUpSignInFilter")
 public class SignUpSignInFilter implements Filter {
 
   @Override
