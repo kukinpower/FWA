@@ -10,7 +10,7 @@
 <head>
     <h1>Profile</h1>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-    <style type="text/css">
+    <style>
       td {
         padding: 0 15px;
       }
