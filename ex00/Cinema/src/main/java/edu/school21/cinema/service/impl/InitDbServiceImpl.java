@@ -20,12 +20,16 @@ public class InitDbServiceImpl implements InitDbService {
 
   private final JdbcTemplate jdbcTemplate;
 
+  private static final String SCHEMA_SQL = "sql/schema.sql";
+  private static final String DATA_SQL = "sql/data.sql";
+  private static final String INIT_DATA_ENV = "INIT_DATA";
+
   @PostConstruct
   public void init() {
-    runSqlScript("sql/schema.sql");
+    runSqlScript(SCHEMA_SQL);
 
-    if (System.getenv().containsKey("INIT_DATA")) {
-      runSqlScript("sql/data.sql");
+    if (System.getenv().containsKey(INIT_DATA_ENV)) {
+      runSqlScript(DATA_SQL);
     }
   }
 
