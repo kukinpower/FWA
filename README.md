@@ -3,6 +3,7 @@
 ## About
 School 21 java project.  
 Using `Java Servlet API`, `Spring` and `jsp`  
+(package `Spring Web` is forbidden by rules of the project)
 
 ## Compile and run
 To run this app on your machine you need to specify your images-storage in [application.properties](src/main/webapp/WEB-INF/application.properties)  
